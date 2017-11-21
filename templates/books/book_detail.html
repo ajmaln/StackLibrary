@@ -1,0 +1,88 @@
+{% extends 'books/index.html' %}
+{% block body %}
+    <div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="title float-left">
+            <h2 class="card-title">{{ book }}</h2>
+            <p class="card-subtitle">Book Details</p>
+            </div>
+            <a href="{% url 'books:copy_create' book.id %}" class="btn btn-success float-right">Add Copies</a>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-responsive">
+                <tbody>
+                <tr>
+                    <th>Book Title</th>
+                    <td>{{ book }}</td>
+                </tr>
+                <tr>
+                    <th>Author</th>
+                    <td>{{ book.author }}</td>
+                </tr>
+                <tr>
+                    <th>Book Code</th>
+                    <td>{{ book.book_code }}</td>
+                </tr>
+                <tr>
+                    <th>Publisher</th>
+                    <td>{{ book.publisher }}</td>
+                </tr>
+                <tr>
+                    <th>Category</th>
+                    <td>{{ book.category }}</td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td>{{ book.price }}</td>
+                </tr>
+                <tr>
+                    <th>Total Copies</th>
+                    <td>{{ book.issues.count }}</td>
+                </tr>
+                <tr>
+                    <th>Available Copies</th>
+                    <td>{{ book.available_copies }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-danger float-right" data-link="{% url 'books:delete' book.id %}" data-toggle="modal" data-target="#myModal">Delete Book</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Copies</h4>
+            <p class="card-subtitle">Details of Book Copies</p>
+        </div>
+        <div class="card-body">
+            <table class="table table-responsive table-hover">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Issued to</th>
+                    <th>Issued date</th>
+                    <th>Last Issued date</th>
+                    <th>Return Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for copy in book.issues.all %}
+                <tr>
+                    <td>{{ copy.code }}</td>
+                    <td>{{ copy.issued_to }}</td>
+                    <td>{{ copy.issued_date|date }}</td>
+                    <td>{{ copy.last_issued_date|date }}</td>
+                    <td>{{ copy.return_date }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+<style>
+.card{
+    margin-bottom: 10px;
+}
+</style>
+{% endblock %}

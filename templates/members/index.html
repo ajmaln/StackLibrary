@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load extra_tags %}
+{% block side_nav %}
+    <li class="nav-item">
+        <a href="{% url 'members:index' %}" class="nav-link {% is_active request 'members:index' True %}">All Members</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'members:create' %}" class="nav-link {% is_active request 'members:create' True %}">New Member</a>
+    </li>
+    <li class="nav-item">
+        <a href="" class="nav-link">Edit Member</a>
+    </li>
+{% endblock %}
+{% block body %}
+    <div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="title float-left">
+            <h2 class="card-title">Member Table</h2>
+            <p class="card-subtitle">Shows all members</p>
+            </div>
+            <a class="btn btn-success float-right" href="{% url 'members:create' %}">New</a>
+        </div>
+        <div class="card-body">
+            <table class="table table-responsive table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>ID Code</th>
+                    <th>Books Issued</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                {% for member in member_list %}
+                <tr>
+                    <td>{{ member }}</td>
+                    <td>{{ member.id_code }}</td>
+                    <td>{{ member.issued_books.count }}</td>
+                    <td><a href="{% url 'members:edit' member.id %}" class="btn btn-warning">Edit</a><a href="{% url 'members:details' member.id %}" class="btn btn-primary">View</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    </div>
+<style>
+td a{
+    margin: 0 5px;
+}
+</style>
+{% endblock %}

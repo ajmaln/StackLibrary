@@ -1,0 +1,27 @@
+{% extends 'books/index.html' %}
+{% load widget_tweaks %}
+{% block body %}
+    <div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Add Book</h2>
+            <p class="card-subtitle">Enter the details for the book</p>
+        </div>
+        <div class="card-body">
+            <form method="post" class="row">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group col-md-12">
+                <label>{{ field.label }}</label>
+                {% render_field field class="form-control" placeholder=field.label %}
+                </div>
+                {% endfor %}
+            <div class="col-md-12">
+                <button class="float-right btn btn-success">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

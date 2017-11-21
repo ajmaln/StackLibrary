@@ -1,0 +1,26 @@
+{% extends 'books/index.html' %}
+{% load widget_tweaks %}
+{% block body %}
+    <div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Create Copies {% if book %} for {{ book.title }}{% endif %}</h4>
+            <p class="card-subtitle">Choose book and other details</p>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>{{ form.book.label }}</label>
+                    {% render_field form.book class="form-control" %}
+                </div>
+                <div class="form-group">
+                    <label>Number of Copies</label>
+                    {% render_field form.count class="form-control" %}
+                </div>
+                <button class="btn btn-success">Create</button>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

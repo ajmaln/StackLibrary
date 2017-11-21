@@ -1,0 +1,98 @@
+{% extends 'members/index.html' %}
+{% block body %}
+ <div class="container">
+ <div class="row">
+    <div class="col-md-9">
+    <div class="card">
+        <div class="card-header">
+            <form class="form-inline float-right" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control mr-sm-2" placeholder="Book_id" name="book_id" type="text">
+                </div>
+                <button class="btn btn-success">Issue</button>
+            </form>
+            <h4 class="card-title">Books Issued</h4>
+            <p class="card-subtitle">Details of Issued Books</p>
+        </div>
+        <div class="card-body">
+            <table class="table table-responsive table-hover">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Code</th>
+                    <th>Issued date</th>
+                    <th>Last Renewal Date</th>
+                    <th>Valid Till</th>
+                    <th>Renewal Count</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for book in member.issued_books %}
+                <tr>
+                    <td>{{ book.book.title }}</td>
+                    <td>{{ book.code }}</td>
+                    <td>{{ book.issued_date|date }}</td>
+                    <td>{{ book.renewed_date }}</td>
+                    <td>{{ book.next_renewal_date }}</td>
+                    <td>{{ book.renewal_count }}</td>
+                    <td>
+                        <a href="{% url 'books:issue' book.code %}" class="btn btn-warning mb-1">Renew</a>
+                        <button data-link="{% url 'books:return' book.code %}" data-toggle="modal" data-target="#myModal" class="btn btn-dark text-light">Return</button>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    <div class="col-md-3">
+    <div class="card">
+        <div class="card-header">
+            <div class="title float-left">
+            <h2 class="card-title">{{ member }}</h2>
+            <p class="card-subtitle">Member Details</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-responsive">
+                <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ member }}</td>
+                </tr>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ member.id_code }}</td>
+                </tr>
+                <tr>
+                    <th>Date Joined</th>
+                    <td>{{ member.date_joined|date }}</td>
+                </tr>
+                <tr>
+                    <th>Course</th>
+                    <td>{{ member.course }}</td>
+                </tr>
+                <tr>
+                    <th>Phone No.</th>
+                    <td>{{ member.phone }}</td>
+                </tr>
+                <tr>
+                    <th>Existing Fine</th>
+                    <td>{{ member.add_fine }}</td>
+                </tr>
+                <tr>
+                    <th>Books Issued</th>
+                    <td>{{ member.issued_books.count }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-danger float-right" data-link="" data-toggle="modal" data-target="#myModal">Delete Member</button>
+        </div>
+    </div>
+    </div>
+ </div>
+ </div>
+{% endblock %}

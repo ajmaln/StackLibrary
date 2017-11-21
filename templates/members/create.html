@@ -1,0 +1,29 @@
+{% extends 'members/index.html' %}
+{% load widget_tweaks %}
+{% block body %}
+    <div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Add New Member</h4>
+            <p class="card-subtitle">Enter the details of the member</p>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group {% if field.errors %}has-danger{% endif %}">
+                    <label for="id_{{ field.id_for_label }}" {% if field.errors %}class="text-danger"{% endif %}>{{ field.label }}</label>
+                    {% if field.errors %}
+                    {% render_field field class="form-control is-invalid" placeholder=field.label %}
+                    <small class="form-control-feedback text-danger">{% for error in field.errors %}{{ error }}{% endfor %}</small>
+                    {% else %}
+                    {% render_field field class="form-control" placeholder=field.label %}
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button class="btn btn-success">Save</button>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

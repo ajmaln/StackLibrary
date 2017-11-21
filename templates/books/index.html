@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load extra_tags %}
+{% block side_nav %}
+    <li class="nav-item">
+        <a class="nav-link {% is_active request 'books:index' True %}" href="{% url 'books:index' %}">All Books</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% is_active request 'books:create' True %}" href="{% url 'books:create' %}">Add Book</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% is_active request 'books:copy_create' True 'pk' book.id %} {% is_active request 'books:copy_create' True %}" href="{% url 'books:copy_create' %}">Add Copy</a>
+    </li>
+{% endblock %}
+{% block body %}
+    <div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Books Table</h2>
+            <p class="card-subtitle">Shows all books</p>
+        </div>
+        <div class="card-body">
+            <table class="table table-responsive table-hover">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Publisher</th>
+                    <th>Copies</th>
+                    <th>Available</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                {% for book in book_list %}
+                <tr>
+                    <td>{{ book }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.publisher }}</td>
+                    <td>{{ book.issues.count }}</td>
+                    <td>{{ book.available_copies }}</td>
+                    <td><a href="{% url 'books:edit' book.id %}" class="btn btn-warning">Edit</a><a href="{% url 'books:details' book.id %}" class="btn btn-primary">View</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    </div>
+<style>
+td a{
+    margin: 0 5px;
+}
+</style>
+{% endblock %}

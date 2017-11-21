@@ -1,0 +1,55 @@
+{% extends 'books/index.html' %}
+{% load widget_tweaks %}
+{% block body %}
+    <div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Issue Book {{ copy }}</h4>
+            <p class="card-subtitle">Enter the member id or choose the member from list</p>
+        </div>
+        <div class="card-body">
+            {% if not copy.is_available %}
+                <table class="table table-responsive table-hover">
+                <tr>
+                    <th>Book Issued to</th>
+                    <td>{{ copy.issued_to }}</td>
+                </tr>
+                <tr>
+                    <th>Issued Date</th>
+                    <td>{{ copy.issued_date }}</td>
+                </tr>
+                <tr>
+                    <th>Last Renewed Date</th>
+                    <td>{{ copy.renewed_date }}</td>
+                </tr>
+                <tr>
+                    <th>Next Renewal Date</th>
+                    <td>{{ copy.next_renewal_date }}</td>
+                </tr>
+                <tr>
+                    <th>Pending fine</th>
+                    <td>{{ copy.issued_to.fine }}</td>
+                </tr>
+                </table>
+
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label>{{ field.label }}</label>
+                    {% render_field field class="form-control" %}
+                </div>
+                {% endfor %}
+                {% if copy.is_available %}
+                <button class="btn btn-success">Issue</button>
+                {% elif copy.issued_to.fine == 0 %}
+                <button class="btn btn-success" {% if not copy.renewal_available %}disabled title="Renewal Not available"{% endif %}>Renew</button>
+                {% elif copy.issued_to.fine > 0 %}
+                <button class="btn btn-success" {% if not copy.renewal_available %}disabled title="Renewal Not available"{% endif %}>Settle Fine & Renew OR Just Renew</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}
